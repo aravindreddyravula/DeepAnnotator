@@ -6,6 +6,7 @@ import train
 import Config
 import utils
 import test
+import sys
 
 def get_data(sample_file, sample_size):
     return pd.read_fwf(sample_file, sep = '\n', header = None, nrows = sample_size)
@@ -15,8 +16,12 @@ def data_shuffle(data, labels):
 
 if __name__ == '__main__':
     #Read from text files and create Train Data
-    positive_train_data = get_data(Config.positive_train_sample_file, Config.positive_sample_size)
-    negative_train_data = get_data(Config.negative_train_sample_file, Config.negative_sample_size)
+    if len(sys.argv) > 2:
+        rows = int(sys.argv[1])
+    else:
+        rows = Config.positive_sample_size
+    positive_train_data = pd.read_fwf(Config.positive_train_sample_file, sep = '\n', header = None, nrows = rows)
+    negative_train_data = pd.read_fwf(Config.negative_train_sample_file, sep = '\n', header = None, nrows = rows)
     positive_train_data.columns = ["Gene"]
     negative_train_data.columns = ["Gene"]
     
